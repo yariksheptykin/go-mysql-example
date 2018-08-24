@@ -1,5 +1,6 @@
 FROM golang:1.8 as builder
 
+# Add app sources.
 WORKDIR /go/src/app
 COPY app.go .
 
@@ -7,8 +8,11 @@ COPY app.go .
 RUN go get -d -v ./...
 RUN go install -v ./...
 
+# Build the app binary targeted on alpine linux.
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 
+# Create a lightweight execution environment for the app.
+# See: https://docs.docker.com/develop/develop-images/multistage-build/#name-your-build-stages
 FROM alpine:latest as prod
 RUN apk --no-cache add ca-certificates
 
