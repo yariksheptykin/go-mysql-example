@@ -22,6 +22,7 @@ WORKDIR /root/
 ADD https://raw.githubusercontent.com/eficode/wait-for/master/wait-for ./wait-for-it.sh
 RUN chmod +x ./wait-for-it.sh
 
+# Install the app from the builder image
 COPY --from=builder /go/src/app/app .
 
 CMD ["./app"]
